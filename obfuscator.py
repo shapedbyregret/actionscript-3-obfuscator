@@ -6,9 +6,13 @@ import re
 removeComments = True
 removeWhitespace = False
 changeFileName = True
+changeVarName = True
+
 blockCommentFound = False
 fileName = "Main"
 newFileName = "Main_Obfs"
+varsFound = []
+varsToChange = []
 
 # Function declarations
 def stripWhiteSpace(someText):
@@ -73,6 +77,26 @@ for line in listLines:
 				tmpLine[0] += "\n" # Add a return carriage to preserve code structure
 				newLine = tmpLine[0] # Store our temp line into newLine
 	
+	# Change variable names
+	if changeVarName:
+		varIndex = newLine.find("var") # See if "var" is declared on this line
+		if varIndex != -1:
+			colonCount = newLine.count(":") # Store number of ":" found
+			prevColonIndex = 0
+			for i in range(0, colonCount): # Iterate over each colon
+				colonIndex = newLine.find(":", prevColonIndex)
+				curIndex = colonIndex - 1
+				aChar = ""
+				tmpList = []
+				while aChar!=" " and aChar!="," and aChar!="\t": # Go backwards from colonindex until we find a space or tab
+					tmpList.append(newLine[curIndex]) # Store char we find in a list
+					curIndex -= 1
+					aChar = newLine[curIndex]
+				tmpList.reverse() # Reverse list so it is in order
+				tmpLine = "".join(["%s" % k for k in tmpList]) # Join each char in list into a string
+				varsFound.append(tmpLine) # Add string into our list of previously found variables
+				prevColonIndex = colonIndex + 1 # Store colonIndex+1 so we don't find it again
+
 	# Remove whitespace, newlines, and tabs
 	if removeWhitespace:
 		newLine = stripWhiteSpace(newLine)
@@ -80,7 +104,7 @@ for line in listLines:
 	# Change constructor to match new file name
 	if changeFileName:
 		if newLine.find(fileName) != -1:
-			newLine.replace(fileName, newFileName, 1)
+			newLine = newLine.replace(fileName, newFileName, 1)
 
 
 	# Replace line
@@ -93,7 +117,7 @@ for line in listLines:
 if changeFileName:
 	newFileName += ".as"
 	fileToWrite = open(newFileName, "w")
-else
+else:
 	fileName += ".as"
 	fileToWrite = open(fileName, "w")
 for line in listLines:
