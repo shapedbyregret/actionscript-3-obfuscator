@@ -1,6 +1,7 @@
 ### AS3 obfuscator ###
 
 import re
+import random
 
 # Declare variables
 removeComments = True
@@ -9,10 +10,11 @@ changeFileName = True
 changeVarName = True
 
 blockCommentFound = False
+varDeclareFound = False
 fileName = "Main"
 newFileName = "Main_Obfs"
 varsFound = []
-varsToChange = []
+varsNew = []
 
 # Function declarations
 def stripWhiteSpace(someText):
@@ -79,23 +81,44 @@ for line in listLines:
 	
 	# Change variable names
 	if changeVarName:
+		# Find new variable declarations
 		varIndex = newLine.find("var") # See if "var" is declared on this line
 		if varIndex != -1:
+			varDeclareFound = True
+		if varDeclareFound:
 			colonCount = newLine.count(":") # Store number of ":" found
-			prevColonIndex = 0
-			for i in range(0, colonCount): # Iterate over each colon
-				colonIndex = newLine.find(":", prevColonIndex)
-				curIndex = colonIndex - 1
-				aChar = ""
-				tmpList = []
-				while aChar!=" " and aChar!="," and aChar!="\t": # Go backwards from colonindex until we find a space or tab
-					tmpList.append(newLine[curIndex]) # Store char we find in a list
-					curIndex -= 1
-					aChar = newLine[curIndex]
-				tmpList.reverse() # Reverse list so it is in order
-				tmpLine = "".join(["%s" % k for k in tmpList]) # Join each char in list into a string
-				varsFound.append(tmpLine) # Add string into our list of previously found variables
-				prevColonIndex = colonIndex + 1 # Store colonIndex+1 so we don't find it again
+			if colonCount > 0:	
+				prevColonIndex = 0
+				for i in range(0, colonCount): # Iterate over each colon
+					colonIndex = newLine.find(":", prevColonIndex)
+					curIndex = colonIndex - 1
+					aChar = ""
+					tmpList = []
+					while aChar!=" " and aChar!="," and aChar!="\t": # Go backwards from colonindex until we find a space or tab
+						tmpList.append(newLine[curIndex]) # Store char we find in a list
+						curIndex -= 1
+						aChar = newLine[curIndex]
+					tmpList.reverse() # Reverse list so it is in order
+					tmpLine = "".join(["%s" % k for k in tmpList]) # Join each char in list into a string
+					varsFound.append(tmpLine) # Add string into our list of previously found variables
+					
+					# Create new variable name
+					foundNewName = False
+					newVarName = ""
+					while not foundNewName:
+						newVarName = "_" + str(random.randrange(1,5000))
+						if newVarName not in varsNew: # Make sure new name is unique
+							foundNewName = True
+					varsNew.append(newVarName)
+					prevColonIndex = colonIndex + 1 # Store colonIndex+1 so we don't find it again
+
+			# Reached a semicolon and presumably end of var declaration
+			if newLine.find(";") != -1:
+				varDeclareFound = False
+		# Iterate over varsFound and replace with varsNew
+		for j in range(0, len(varsFound)):
+			newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
+			#newLine = newLine.replace(varsFound[j], varsNew[j])
 
 	# Remove whitespace, newlines, and tabs
 	if removeWhitespace:
