@@ -79,46 +79,41 @@ for line in listLines:
 				tmpLine[0] += "\n" # Add a return carriage to preserve code structure
 				newLine = tmpLine[0] # Store our temp line into newLine
 	
-	# Change variable names
+	# Collect variable names
 	if changeVarName:
-		# Find new variable declarations
-		varIndex = newLine.find("var") # See if "var" is declared on this line
-		if varIndex != -1:
-			varDeclareFound = True
-		if varDeclareFound:
-			colonCount = newLine.count(":") # Store number of ":" found
-			if colonCount > 0:	
-				prevColonIndex = 0
-				for i in range(0, colonCount): # Iterate over each colon
-					colonIndex = newLine.find(":", prevColonIndex)
-					curIndex = colonIndex - 1
-					aChar = ""
-					tmpList = []
-					while aChar!=" " and aChar!="," and aChar!="\t": # Go backwards from colonindex until we find a space or tab
-						tmpList.append(newLine[curIndex]) # Store char we find in a list
-						curIndex -= 1
-						aChar = newLine[curIndex]
-					tmpList.reverse() # Reverse list so it is in order
-					tmpLine = "".join(["%s" % k for k in tmpList]) # Join each char in list into a string
-					varsFound.append(tmpLine) # Add string into our list of previously found variables
-					
-					# Create new variable name
-					foundNewName = False
-					newVarName = ""
-					while not foundNewName:
-						newVarName = "_" + str(random.randrange(1,5000))
-						if newVarName not in varsNew: # Make sure new name is unique
-							foundNewName = True
-					varsNew.append(newVarName)
-					prevColonIndex = colonIndex + 1 # Store colonIndex+1 so we don't find it again
+		
+		tmpList = [] # Declare empty list
 
-			# Reached a semicolon and presumably end of var declaration
-			if newLine.find(";") != -1:
+		varIndex = newLine.find("var") # See if "var" is declared on this line
+		functionIndex = newLine.find("function") # See if "function" found on this line
+		
+
+		if varIndex != -1 or functionIndex != -1: # If "var" or "function" found, set varDeclareFound to True
+			varDeclareFound = True
+
+		if varDeclareFound:
+
+			if varIndex == -1 and functionIndex != -1: # If function found but not var found
+				tmpList = re.findall("\w+(?=[\(|:])", newLine) # Make list of all words ending with ":" or "("
+			else: # Otherwise
+				tmpList = re.findall("\w+(?=:)", newLine) # Make list of all words ending with just ":"
+				
+			for tmpLine in tmpList: # Sort through list of variable names
+				varsFound.append(tmpLine) # and append to varsFound list
+
+				# Create new variable name
+				foundNewName = False
+				newVarName = ""
+				while not foundNewName: # Keep searching until find unique name
+					newVarName = "_" + str(random.randrange(1,5000)) # Create new name that is an underscore plus a random number up to 5000
+					if newVarName not in varsNew: # Make sure new name is unique
+						foundNewName = True
+				varsNew.append(newVarName)
+
+			# Reached a semicolon or open bracket and presumably end of var/function declaration
+			if newLine.find(";") != -1 or newLine.find("{") != -1:
 				varDeclareFound = False
-		# Iterate over varsFound and replace with varsNew
-		for j in range(0, len(varsFound)):
-			newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
-			#newLine = newLine.replace(varsFound[j], varsNew[j])
+
 
 	# Remove whitespace, newlines, and tabs
 	if removeWhitespace:
@@ -129,22 +124,34 @@ for line in listLines:
 		if newLine.find(fileName) != -1:
 			newLine = newLine.replace(fileName, newFileName, 1)
 
-
 	# Replace line
 	lineIndex = listLines.index(line) # Get index of line we are currently working on
 	listLines.remove(line) # Remove current line and...
 	listLines.insert(lineIndex, newLine) # ... replace with newLine[0]
 
+# Change Variable names
+if changeVarName:
+	for line in listLines:
+		newLine = line
+		# Iterate over varsFound and replace with varsNew
+		for j in range(0, len(varsFound)):
+			newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
+		# Replace line
+		lineIndex = listLines.index(line) # Get index of line we are currently working on
+		listLines.remove(line) # Remove current line and...
+		listLines.insert(lineIndex, newLine) # ... replace with newLine[0]
+
+
 
 # Write to file
 if changeFileName:
-	newFileName += ".as"
-	fileToWrite = open(newFileName, "w")
+	newFileName += ".as" # Concatenate ".as" to the new file name
+	fileToWrite = open(newFileName, "w") # Then open it for writing
 else:
 	fileName += ".as"
 	fileToWrite = open(fileName, "w")
-for line in listLines:
-	fileToWrite.write(line)
+for line in listLines: # Go through our modified listLines one line at a time
+	fileToWrite.write(line) # Write each line to the file
 
 # Close file after writing
 fileToWrite.close()
