@@ -38,18 +38,7 @@ for line in listLines:
 	if removeComments:
 		
 		# Remove and delete all inline block comments
-		tmpLine = ""
-		newLineCopy = newLine
-		blockBeginCount = newLineCopy.count("/*")
-		blockEndCount = newLineCopy.count("*/")
-		while blockBeginCount>0 and blockEndCount>0:
-			tmpList = newLineCopy.split("/*", 1)
-			tmpLine += tmpList[0]
-			tmpList = newLineCopy.split("*/",1)
-			tmpLine += tmpList[1]
-			newLineCopy = tmpLine
-			blockBeginCount -= 1
-			blockEndCount -= 1
+		tmpLine = re.sub(r"(/\*).*(\*/)", "", newLine) # Matches everything between "/*" and "*/" and replaces with a newline
 		if tmpLine != "":
 			newLine = tmpLine
 
@@ -86,24 +75,20 @@ for line in listLines:
 
 		varIndex = newLine.find("var") # See if "var" is declared on this line
 		functionIndex = newLine.find("function") # See if "function" found on this line
-		
 
 		if varIndex != -1 or functionIndex != -1: # If "var" or "function" found, set varDeclareFound to True
 			varDeclareFound = True
 
 		if varDeclareFound:
-
 			if varIndex == -1 and functionIndex != -1: # If function found but not var found
-				tmpList = re.findall("\w+(?=[\(|:])", newLine) # Make list of all words ending with ":" or "("
+				tmpList = re.findall("\w+\s*(?=[\(|:])", newLine) # Make list of all words ending with ":" or "("
 			else: # Otherwise
-				tmpList = re.findall("\w+(?=:)", newLine) # Make list of all words ending with just ":"
-				
+				tmpList = re.findall("\w+\s*(?=:)", newLine) # Make list of all words ending with just ":"
 			for tmpLine in tmpList: # Sort through list of variable names
 				varsFound.append(tmpLine) # and append to varsFound list
 
 				# Create new variable name
 				foundNewName = False
-				newVarName = ""
 				while not foundNewName: # Keep searching until find unique name
 					newVarName = "_" + str(random.randrange(1,5000)) # Create new name that is an underscore plus a random number up to 5000
 					if newVarName not in varsNew: # Make sure new name is unique
