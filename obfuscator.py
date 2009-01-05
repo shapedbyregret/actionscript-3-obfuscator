@@ -1,6 +1,6 @@
-# AS3 obfuscator
+# Actionscript 3.0 Obfuscator
 #
-# Copyright (c) 2008 Erik Johnson
+# Copyright (c) 2008 Erik Johnson (shapedbyregret@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,10 +31,13 @@ import sys
 #
 #========================================
 removeComments = True
-removeWhitespace = True
-changeFileName = True
 changeVarName = True
 encodeStrings = True
+
+# Following options should not be changed.
+# They are either incomplete or incorrectly implemented.
+removeWhiteSpace = False
+changeFileName = True
 
 #========================================
 # Declare Variables
@@ -67,7 +70,8 @@ def stringToHex(oldString):
 		newString += tmpString # Append modified hex string to our newString
 	return newString
 
-
+print stringToHex("apple")
+exit()
 #========================================
 # Handle arguments
 #
