@@ -1,23 +1,56 @@
-### AS3 obfuscator ###
+# AS3 obfuscator
+#
+# Copyright (c) 2008 Erik Johnson
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+
+
+#========================================
+# Import modules
+#
+#========================================
 import re
 import random
 import sys
 
+#========================================
 # Options
+#
+#========================================
 removeComments = True
-removeWhitespace = False
+removeWhitespace = True
 changeFileName = True
 changeVarName = True
 encodeStrings = True
 
+#========================================
 # Declare Variables
+#
+#========================================
 blockCommentFound = False
 varDeclareFound = False
 varsFound = []
 varsNew = []
 
+#========================================
 # Function declarations
+#
+#========================================
+
+# Strip the white space from a string
 def stripWhiteSpace(someText):
 	#tmpLine = someText.strip() # Remove whitespace
 	tmpLine = someText.replace("\n", "", 1) # Remove newlines
@@ -25,6 +58,7 @@ def stripWhiteSpace(someText):
 	tmpLine = "".join(["%s" % k for k in tmpLine]) # Iterate through tmpLine and join it to ""
 	return tmpLine
 
+# Convert a string variable into its hex equivalent
 def stringToHex(oldString):
 	newString = ""
 	for char in oldString: # Iterate over each char in given string
@@ -32,6 +66,12 @@ def stringToHex(oldString):
 		tmpString = tmpString.replace("0", "\\", 1) # Replace first 0 in hex string with backslash
 		newString += tmpString # Append modified hex string to our newString
 	return newString
+
+
+#========================================
+# Handle arguments
+#
+#========================================
 
 # Check if arguments given
 if len(sys.argv)>1:
@@ -51,12 +91,19 @@ else:
 	print "Filename not provided."
 	exit()
 
-# Open file to change in read mode
+#========================================
+# Open File
+#
+#========================================
 fileToChange = open(fullFileName, "r")
 listLines = fileToChange.readlines() # Store fileToChange to memory in a list
 fileToChange.close() # Close file
 
-# Iterate over lists
+
+#========================================
+# Iterate over file, one line at a time
+#
+#========================================
 for line in listLines:
 
 	newLine = line
@@ -174,7 +221,11 @@ for line in listLines:
 	listLines.remove(line) # Remove current line and...
 	listLines.insert(lineIndex, newLine) # ... replace with newLine[0]
 
+
+#========================================
 # Change Variable names
+#
+#========================================
 if changeVarName:
 	for line in listLines:
 		newLine = line
@@ -187,8 +238,10 @@ if changeVarName:
 		listLines.insert(lineIndex, newLine) # ... replace with newLine[0]
 
 
-
+#========================================
 # Write to file
+#
+#========================================
 if changeFileName:
 	fileToWrite = open(newFullFileName, "w") # Then open it for writing
 else:
@@ -196,5 +249,5 @@ else:
 for line in listLines: # Go through our modified listLines one line at a time
 	fileToWrite.write(line) # Write each line to the file
 
-# Close file after writing
-fileToWrite.close()
+fileToWrite.close() # Close file after writing
+
