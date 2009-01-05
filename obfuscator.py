@@ -6,7 +6,7 @@ import sys
 
 # Options
 removeComments = True
-removeWhitespace = True
+removeWhitespace = False
 changeFileName = True
 changeVarName = True
 encodeStrings = True
@@ -131,11 +131,34 @@ for line in listLines:
 
 	# Encode strings
 	if encodeStrings:
-		tmpList = re.findall(r"\".*?(?<!\\)\"", newLine) # Search for all double quotes
-		for literal in tmpList:
-			literal = literal.strip("\"")
-			newLine = newLine.replace(literal, stringToHex(literal))
-			#print newLine
+		tmpLine = ""
+		inSingleQuote = False
+		inDoubleQuote = False
+		for x in range(0, len(newLine)): # Iterate over each character
+				
+			if newLine[x]=="\"":
+				if x>0 and newLine[x-1]!="\\": # Ensure previous character not an escape character
+					if inDoubleQuote:
+						inDoubleQuote = False
+					else:
+						inDoubleQuote = True
+					tmpLine += newLine[x]
+				else:
+					tmpLine += stringToHex( newLine[x] )
+			else:
+				if inDoubleQuote:
+					tmpLine += stringToHex( newLine[x] )
+				else:
+					tmpLine += newLine[x]
+			
+		newLine = tmpLine
+
+		# Previous attempt to find quotes using regular expression module.
+		# Correctly finds quotes, but need a method to replace multiple strings all at once
+		#tmpList = re.findall(r"\".*?(?<!\\)\"", newLine) # Search for all double quotes
+		#for literal in tmpList:
+		#	literal = literal.strip("\"")
+		#	newLine = newLine.replace(literal, stringToHex(literal))
 
 	# Remove whitespace, newlines, and tabs
 	if removeWhitespace:
