@@ -70,8 +70,6 @@ def stringToHex(oldString):
 		newString += tmpString # Append modified hex string to our newString
 	return newString
 
-print stringToHex("apple")
-exit()
 #========================================
 # Handle arguments
 #
