@@ -8,324 +8,324 @@
 	import flash.utils.Timer;
 
 	[SWF(width="\x34\x30\x30", height="\x36\x30\x30", backgroundColor="\x23\x46\x46\x46\x46\x46\x46",frameRate="\x33\x30")]
-	public class Main_Obfs extends Sprite {
+	public class _2837 extends Sprite {
 		
-		private var _2340:MovieClip;
-		private var _2356:int;
-		private var _482:Array;
-		private var _735:Array;
-		private var _3260:Array;
+		private var _841:MovieClip;
+		private var _2434:int;
+		private var _1034:Array;
+		private var _501:Array;
+		private var _667:Array;
 		
-		private var _2251:Boolean;
-		private var _4486:int;
-		private var _2685:int;
+		private var _2426:Boolean;
+		private var _536:int;
+		private var _2972:int;
 		
-		private var _3495:Boolean;
-		private var _779:int;
-		private var _4691:int;
+		private var _3053:Boolean;
+		private var _1071:int;
+		private var _2322:int;
 		
-		private var _3123:Boolean;
-		private var _1479:int;
-		private var _2418:int;
+		private var _4746:Boolean;
+		private var _2348:int;
+		private var _1352:int;
 		
-		private var _1290:Timer;
-		private var _317:Timer;
-		private var _4805:Timer;
+		private var _2194:Timer;
+		private var _3494:Timer;
+		private var _4743:Timer;
 		
-		public function Main_Obfs() {
+		public function _2837() {
 			
 			
-			var _3672:StyleSheet = new StyleSheet();
-			_3672.parseCSS("\x70\x7b\x66\x6f\x6e\x74\x57\x65\x69\x67\x68\x74\x3a\x62\x6f\x6c\x64\x3b\x66\x6f\x6e\x74\x53\x69\x7a\x65\x3a\x34\x38\x70\x78\x3b\x66\x6f\x6e\x74\x46\x61\x6d\x69\x6c\x79\x3a\x41\x72\x69\x61\x6c\x3b\x7d\x61\x3a\x6c\x69\x6e\x6b\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x33\x33\x33\x33\x33\x33\x7d\x61\x3a\x68\x6f\x76\x65\x72\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x46\x46\x41\x41\x43\x43\x3b\x7d");
-			var _4955:TextField = new TextField();
-			_4955.styleSheet = _3672;
-			_4955.autoSize = TextFieldAutoSize.CENTER;
-			_4955.htmlText = "\x3c\x70\x3e\x3c\x61\x20\x68\x72\x65\x66\x3d\x27\x23\x27\x3e\x53\x74\x61\x72\x74\x3c\x2f\x61\x3e\x3c\x2f\x70\x3e";
+			var _663:StyleSheet = new StyleSheet();
+			_663.parseCSS("\x70\x7b\x66\x6f\x6e\x74\x57\x65\x69\x67\x68\x74\x3a\x62\x6f\x6c\x64\x3b\x66\x6f\x6e\x74\x53\x69\x7a\x65\x3a\x34\x38\x70\x78\x3b\x66\x6f\x6e\x74\x46\x61\x6d\x69\x6c\x79\x3a\x41\x72\x69\x61\x6c\x3b\x7d\x61\x3a\x6c\x69\x6e\x6b\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x33\x33\x33\x33\x33\x33\x7d\x61\x3a\x68\x6f\x76\x65\x72\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x46\x46\x41\x41\x43\x43\x3b\x7d");
+			var _254:TextField = new TextField();
+			_254.styleSheet = _663;
+			_254.autoSize = TextFieldAutoSize.CENTER;
+			_254.htmlText = "\x3c\x70\x3e\x3c\x61\x20\x68\x72\x65\x66\x3d\x27\x23\x27\x3e\x53\x74\x61\x72\x74\x3c\x2f\x61\x3e\x3c\x2f\x70\x3e";
 			
-			var _1833:SimpleButton = new SimpleButton(_4955, _4955, _4955, _4955);
-			_1833.x = stage.stageWidth/2 - _1833.width/2;
-			_1833.y = stage.stageHeight / 2 - _1833.height;
-			addChildAt(_1833, 0);
-			stage.addEventListener(MouseEvent.CLICK, _2679);
+			var _4456:SimpleButton = new SimpleButton(_254, _254, _254, _254);
+			_4456.x = stage.stageWidth/2 - _4456.width/2;
+			_4456.y = stage.stageHeight / 2 - _4456.height;
+			addChildAt(_4456, 0);
+			stage.addEventListener(MouseEvent.CLICK, _1842);
 			
 		}
 		
-		private function _165( _1147:Event ):void
+		private function _766( _1990:Event ):void
 		{
 			
-			if ( _1290.currentCount > 1 ) {
+			if ( _2194.currentCount > 1 ) {
 				
 				
-				_1712(_482[_4486], 0xFFAACC);
-				_1712(_482[_4486+1], 0xFFAACC);
+				_2295(_1034[_536], 0xFFAACC);
+				_2295(_1034[_536+1], 0xFFAACC);
 				
 				
-				if ( _482[_4486].width > _482[_4486+1].width ) {
+				if ( _1034[_536].width > _1034[_536+1].width ) {
 					
-					var _2953:int = _482[_4486].y;
-					_482[_4486].y = _482[_4486 + 1].y;
-					_482[_4486 + 1].y = _2953;
-					
-					
-					var _2706:MovieClip = _482[_4486];
-					_482[_4486] = _482[_4486 + 1];
-					_482[_4486 + 1] = _2706;
+					var _4930:int = _1034[_536].y;
+					_1034[_536].y = _1034[_536 + 1].y;
+					_1034[_536 + 1].y = _4930;
 					
 					
-					_2251 = true;
+					var _2223:MovieClip = _1034[_536];
+					_1034[_536] = _1034[_536 + 1];
+					_1034[_536 + 1] = _2223;
+					
+					
+					_2426 = true;
 				}
 				
 				
-				if ( _4486 > 0 ) {
-					_1712(_482[_4486-1], 0x333333);
-					_1712(_482[_4486], 0x333333);
+				if ( _536 > 0 ) {
+					_2295(_1034[_536-1], 0x333333);
+					_2295(_1034[_536], 0x333333);
 				}
 				
 				
 				
 				
-				if ( _4486 < _2356-2-_2685 ) { 
-					_4486++;
-					_1290.reset();
-					_1290.start();
+				if ( _536 < _2434-2-_2972 ) { 
+					_536++;
+					_2194.reset();
+					_2194.start();
 				}
 				else {
-					_4486 = 0;
-					_2685++;
-					if ( !_2251 ) { 
-						_1290.reset();
-						_1290.stop();
+					_536 = 0;
+					_2972++;
+					if ( !_2426 ) { 
+						_2194.reset();
+						_2194.stop();
 					}
 					else { 
-						_2251 = false;
-						_1290.reset();
-						_1290.start();
+						_2426 = false;
+						_2194.reset();
+						_2194.start();
 					}
 				}
 			}
 			
 			
-			if ( _317.currentCount > 1 ) {
+			if ( _3494.currentCount > 1 ) {
 				
 				
-				_1712(_735[_779], 0xFFAACC);
-				_1712(_735[_779+1], 0xFFAACC);
+				_2295(_501[_1071], 0xFFAACC);
+				_2295(_501[_1071+1], 0xFFAACC);
 				
 				
-				if ( _735[_779].width > _735[_779+1].width ) {
+				if ( _501[_1071].width > _501[_1071+1].width ) {
 					
-					var _2187:int = _735[_779].y;
-					_735[_779].y = _735[_779 + 1].y;
-					_735[_779 + 1].y = _2187;
+					var _106:int = _501[_1071].y;
+					_501[_1071].y = _501[_1071 + 1].y;
+					_501[_1071 + 1].y = _106;
 					
 					
-					var _4545:MovieClip = _735[_779];
-					_735[_779] = _735[_779 + 1];
-					_735[_779 + 1] = _4545;
+					var _1856:MovieClip = _501[_1071];
+					_501[_1071] = _501[_1071 + 1];
+					_501[_1071 + 1] = _1856;
 					
-					_3495 = true;
+					_3053 = true;
 				}
 				
 				
-				if ( _779 > 0 ) {
-					_1712(_735[_779-1], 0x333333);
-					_1712(_735[_779], 0x333333);
+				if ( _1071 > 0 ) {
+					_2295(_501[_1071-1], 0x333333);
+					_2295(_501[_1071], 0x333333);
 				}
 				
-				if ( _779 < _2356-2-_4691 ) { 
-					_779++;
-					_317.reset();
-					_317.start();
+				if ( _1071 < _2434-2-_2322 ) { 
+					_1071++;
+					_3494.reset();
+					_3494.start();
 				}
 				else {
-					_779 = 0;
-					_4691++;
-					if ( !_3495 ) {
-						_317.reset();
-						_317.stop();
+					_1071 = 0;
+					_2322++;
+					if ( !_3053 ) {
+						_3494.reset();
+						_3494.stop();
 					}
 					else {
-						_3495 = false;
-						_317.reset();
-						_317.start();
+						_3053 = false;
+						_3494.reset();
+						_3494.start();
 					}
 				}
 			}
 			
 			
-			if ( _4805.currentCount > 1 ) {
+			if ( _4743.currentCount > 1 ) {
 				
 				
-				_1712(_3260[_1479], 0xFFAACC);
-				_1712(_3260[_1479+1], 0xFFAACC);
+				_2295(_667[_2348], 0xFFAACC);
+				_2295(_667[_2348+1], 0xFFAACC);
 				
 				
 				
-				if ( _3260[_1479].width > _3260[_1479+1].width ) {
+				if ( _667[_2348].width > _667[_2348+1].width ) {
 					
-					var _4339:int = _3260[_1479].y;
-					_3260[_1479].y = _3260[_1479 + 1].y;
-					_3260[_1479 + 1].y = _4339;
+					var _809:int = _667[_2348].y;
+					_667[_2348].y = _667[_2348 + 1].y;
+					_667[_2348 + 1].y = _809;
 					
 					
-					var _1469:MovieClip = _3260[_1479];
-					_3260[_1479] = _3260[_1479 + 1];
-					_3260[_1479 + 1] = _1469;
+					var _569:MovieClip = _667[_2348];
+					_667[_2348] = _667[_2348 + 1];
+					_667[_2348 + 1] = _569;
 					
-					_3123 = true;
+					_4746 = true;
 				}
 				
 				
-				if ( _1479 > 0 ) {
-					_1712(_3260[_1479-1], 0x333333);
-					_1712(_3260[_1479], 0x333333);
+				if ( _2348 > 0 ) {
+					_2295(_667[_2348-1], 0x333333);
+					_2295(_667[_2348], 0x333333);
 				}
 				
-				if ( _1479 < _2356-2-_2418 ) { 
-					_1479++;
-					_4805.reset();
-					_4805.start();
+				if ( _2348 < _2434-2-_1352 ) { 
+					_2348++;
+					_4743.reset();
+					_4743.start();
 				}
 				else {
-					_1479 = 0;
-					_2418++;
-					if ( !_3123 ) {
-						_4805.reset();
-						_4805.stop();
+					_2348 = 0;
+					_1352++;
+					if ( !_4746 ) {
+						_4743.reset();
+						_4743.stop();
 					}
 					else {
-						_3123 = false;
-						_4805.reset();
-						_4805.start();
+						_4746 = false;
+						_4743.reset();
+						_4743.start();
 					}
 				}
 			}
 			
 		}
 		
-		private function _535( _582:MouseEvent ):void
+		private function _2757( _1665:MouseEvent ):void
 		{
-			_2340 = new MovieClip();
-			_2340.graphics.beginFill(0xFFFFFF, 1);
-			_2340.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-			_2340.graphics.endFill();
+			_841 = new MovieClip();
+			_841.graphics.beginFill(0xFFFFFF, 1);
+			_841.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			_841.graphics.endFill();
 			
 			
-			_2356 = 40;
-			_482 = new Array();
-			_735 = new Array();
-			_3260 = new Array();
+			_2434 = 40;
+			_1034 = new Array();
+			_501 = new Array();
+			_667 = new Array();
 			
-			_2251 = _3495 = _3123 = false;
-			_4486 = _779 = _1479 = 0;
-			_2685 = _4691 = _2418 = 0;
-			_1290 = new Timer(20, 0);
-			_317 = new Timer(20, 0);
-			_4805 = new Timer(20, 0);
+			_2426 = _3053 = _4746 = false;
+			_536 = _1071 = _2348 = 0;
+			_2972 = _2322 = _1352 = 0;
+			_2194 = new Timer(20, 0);
+			_3494 = new Timer(20, 0);
+			_4743 = new Timer(20, 0);
 			
 			
-			for ( var _3963:int = 0; _3963 < _2356; ++_3963 ) {
-				var _4742:MovieClip = new MovieClip();
-				_4742.graphics.beginFill(0x333333, 1);
-				_4742.graphics.drawRect(0, 0, (_3963*9)+Math.floor(Math.random()*50), 2);
-				_4742.graphics.endFill();
-				_4742.y = (_3963 * 3) + 20;
-				_482.push( _4742 );
-				_2340.addChild(_482[_3963]);
+			for ( var _151:int = 0; _151 < _2434; ++_151 ) {
+				var _1635:MovieClip = new MovieClip();
+				_1635.graphics.beginFill(0x333333, 1);
+				_1635.graphics.drawRect(0, 0, (_151*9)+Math.floor(Math.random()*50), 2);
+				_1635.graphics.endFill();
+				_1635.y = (_151 * 3) + 20;
+				_1034.push( _1635 );
+				_841.addChild(_1034[_151]);
 			}
 			
 			
-			for ( var _1340:int = 0; _1340 < _2356; ++_1340 ) {
-				var _1116:MovieClip = new MovieClip();
-				_1116.graphics.beginFill(0x333333, 1);
-				_1116.graphics.drawRect(0, 0, Math.floor(Math.random()*stage.stageWidth), 2);
-				_1116.graphics.endFill();
-				_1116.y = (_1340 * 3) + 220;
-				_735.push( _1116 );
-				_2340.addChild(_735[_1340]);
+			for ( var _1262:int = 0; _1262 < _2434; ++_1262 ) {
+				var _4841:MovieClip = new MovieClip();
+				_4841.graphics.beginFill(0x333333, 1);
+				_4841.graphics.drawRect(0, 0, Math.floor(Math.random()*stage.stageWidth), 2);
+				_4841.graphics.endFill();
+				_4841.y = (_1262 * 3) + 220;
+				_501.push( _4841 );
+				_841.addChild(_501[_1262]);
 			}
 			
 			
-			for ( var _2513:int = 0; _2513 < _2356; ++_2513 ) {
-				var _4057:Number = stage.stageWidth - (_2513 * 10);
-				_4057 -= Math.floor(Math.random() * 50);
-				if ( _4057 < 0 ) { _4057 = _2513; }
-				var _3724:MovieClip = new MovieClip();
-				_3724.graphics.beginFill(0x333333, 1);
-				_3724.graphics.drawRect(0, 0, _4057, 2);
-				_3724.graphics.endFill();
-				_3724.y = (_2513 * 3) + 420;
-				_3260.push( _3724 );
-				_2340.addChild(_3260[_2513]);
+			for ( var _3527:int = 0; _3527 < _2434; ++_3527 ) {
+				var _4734:Number = stage.stageWidth - (_3527 * 10);
+				_4734 -= Math.floor(Math.random() * 50);
+				if ( _4734 < 0 ) { _4734 = _3527; }
+				var _295:MovieClip = new MovieClip();
+				_295.graphics.beginFill(0x333333, 1);
+				_295.graphics.drawRect(0, 0, _4734, 2);
+				_295.graphics.endFill();
+				_295.y = (_3527 * 3) + 420;
+				_667.push( _295 );
+				_841.addChild(_667[_3527]);
 			}
 			
 			
-			var _3956:TextFormat = new TextFormat("\x41\x72\x69\x61\x6c", 16, 0x333333, true);
-			var _4930:TextField = new TextField();
-			_4930.defaultTextFormat = _3956;
-			_4930.autoSize = TextFieldAutoSize.CENTER;
-			_4930.x = stage.stageWidth / 2;
-			_4930.text = "\x4d\x6f\x73\x74\x6c\x79\x20\x53\x6f\x72\x74\x65\x64\x20\x41\x73\x63\x65\x6e\x64\x69\x6e\x67";
-			_2340.addChild(_4930);
+			var _3355:TextFormat = new TextFormat("\x41\x72\x69\x61\x6c", 16, 0x333333, true);
+			var _282:TextField = new TextField();
+			_282.defaultTextFormat = _3355;
+			_282.autoSize = TextFieldAutoSize.CENTER;
+			_282.x = stage.stageWidth / 2;
+			_282.text = "\x4d\x6f\x73\x74\x6c\x79\x20\x53\x6f\x72\x74\x65\x64\x20\x41\x73\x63\x65\x6e\x64\x69\x6e\x67";
+			_841.addChild(_282);
 			
-			var _3367:TextField = new TextField();
-			_3367.defaultTextFormat = _3956;
-			_3367.autoSize = TextFieldAutoSize.CENTER;
-			_3367.x = stage.stageWidth / 2;
-			_3367.y = 200;
-			_3367.text = "\x52\x61\x6e\x64\x6f\x6d";
-			_2340.addChild(_3367);
+			var _4093:TextField = new TextField();
+			_4093.defaultTextFormat = _3355;
+			_4093.autoSize = TextFieldAutoSize.CENTER;
+			_4093.x = stage.stageWidth / 2;
+			_4093.y = 200;
+			_4093.text = "\x52\x61\x6e\x64\x6f\x6d";
+			_841.addChild(_4093);
 			
-			var _1123:TextField = new TextField();
-			_1123.defaultTextFormat = _3956;
-			_1123.autoSize = TextFieldAutoSize.CENTER;
-			_1123.x = stage.stageWidth / 2;
-			_1123.y = 400;
-			_1123.text = "\x4d\x6f\x73\x74\x6c\x79\x20\x53\x6f\x72\x74\x65\x64\x20\x44\x65\x73\x63\x65\x6e\x64\x69\x6e\x67";
-			_2340.addChild(_1123);
-			
-			
-			var _3672:StyleSheet = new StyleSheet();
-			_3672.parseCSS("\x70\x7b\x66\x6f\x6e\x74\x57\x65\x69\x67\x68\x74\x3a\x62\x6f\x6c\x64\x3b\x66\x6f\x6e\x74\x53\x69\x7a\x65\x3a\x31\x36\x3b\x66\x6f\x6e\x74\x46\x61\x6d\x69\x6c\x79\x3a\x41\x72\x69\x61\x6c\x3b\x7d\x61\x3a\x6c\x69\x6e\x6b\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x33\x33\x33\x33\x33\x33\x7d\x61\x3a\x68\x6f\x76\x65\x72\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x46\x46\x41\x41\x43\x43\x3b\x7d");
-			var _3949:TextField = new TextField();
-			_3949.border = true;
-			_3949.styleSheet = _3672;
-			_3949.autoSize = TextFieldAutoSize.CENTER;
-			_3949.htmlText = "\x3c\x70\x3e\x3c\x61\x20\x68\x72\x65\x66\x3d\x27\x23\x27\x3e\x52\x65\x73\x74\x61\x72\x74\x3c\x2f\x61\x3e\x3c\x2f\x70\x3e";
-			
-			var _1675:SimpleButton = new SimpleButton(_3949, _3949, _3949, _3949);
-			_1675.x = stage.stageWidth/2 - _1675.width;
-			_1675.y = 570;
-			_2340.addChild(_1675);
-			_1675.addEventListener(MouseEvent.CLICK, _535);
+			var _744:TextField = new TextField();
+			_744.defaultTextFormat = _3355;
+			_744.autoSize = TextFieldAutoSize.CENTER;
+			_744.x = stage.stageWidth / 2;
+			_744.y = 400;
+			_744.text = "\x4d\x6f\x73\x74\x6c\x79\x20\x53\x6f\x72\x74\x65\x64\x20\x44\x65\x73\x63\x65\x6e\x64\x69\x6e\x67";
+			_841.addChild(_744);
 			
 			
-			_1290.start();
-			_317.start();
-			_4805.start();
+			var _663:StyleSheet = new StyleSheet();
+			_663.parseCSS("\x70\x7b\x66\x6f\x6e\x74\x57\x65\x69\x67\x68\x74\x3a\x62\x6f\x6c\x64\x3b\x66\x6f\x6e\x74\x53\x69\x7a\x65\x3a\x31\x36\x3b\x66\x6f\x6e\x74\x46\x61\x6d\x69\x6c\x79\x3a\x41\x72\x69\x61\x6c\x3b\x7d\x61\x3a\x6c\x69\x6e\x6b\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x33\x33\x33\x33\x33\x33\x7d\x61\x3a\x68\x6f\x76\x65\x72\x7b\x63\x6f\x6c\x6f\x72\x3a\x23\x46\x46\x41\x41\x43\x43\x3b\x7d");
+			var _3174:TextField = new TextField();
+			_3174.border = true;
+			_3174.styleSheet = _663;
+			_3174.autoSize = TextFieldAutoSize.CENTER;
+			_3174.htmlText = "\x3c\x70\x3e\x3c\x61\x20\x68\x72\x65\x66\x3d\x27\x23\x27\x3e\x52\x65\x73\x74\x61\x72\x74\x3c\x2f\x61\x3e\x3c\x2f\x70\x3e";
 			
-			addChild(_2340);
+			var _1966:SimpleButton = new SimpleButton(_3174, _3174, _3174, _3174);
+			_1966.x = stage.stageWidth/2 - _1966.width;
+			_1966.y = 570;
+			_841.addChild(_1966);
+			_1966.addEventListener(MouseEvent.CLICK, _2757);
+			
+			
+			_2194.start();
+			_3494.start();
+			_4743.start();
+			
+			addChild(_841);
 		}
 		
-		private function _1712( _2282:MovieClip, _2090:uint ):void
+		private function _2295( _65:MovieClip, _1368:uint ):void
 		{
-			var _4057:int = _2282.width;
-			var _2652:int = _2282.height;
-			_2282.graphics.beginFill(_2090, 1);
-			_2282.graphics.drawRect(0, 0, _4057, _2652);
-			_2282.graphics.endFill();
+			var _4734:int = _65.width;
+			var _2323:int = _65.height;
+			_65.graphics.beginFill(_1368, 1);
+			_65.graphics.drawRect(0, 0, _4734, _2323);
+			_65.graphics.endFill();
 		}
 		
-		private function _2679( _582:MouseEvent ):void
+		private function _1842( _1665:MouseEvent ):void
 		{
 			
-			_535(null);
+			_2757(null);
 			
 			
-			addEventListener(Event.ENTER_FRAME, _165);
+			addEventListener(Event.ENTER_FRAME, _766);
 			
 			
-			stage.removeEventListener(MouseEvent.CLICK, _2679);
+			stage.removeEventListener(MouseEvent.CLICK, _1842);
 			removeChildAt(0);
 		}
 		
