@@ -1,11 +1,14 @@
 
 Actionscript 3.0 Obfuscator
 
+
 Homepage: 
-	http://www.applesaucejuice.net
+	http://github.com/shapedbyregret/actionscript-3-obfuscator/tree/master
+
 
 Credits:
 	Main Contributor - Erik Johnson (shapedbyregret@gmail.com)
+
 
 Options:
 	There are currently only 3 options that you can change by setting them to either "True" or "False".
@@ -19,6 +22,7 @@ Options:
 
 	encodestrings:	Converts string literals into their hex equivalent. Eg. "apple" becomes "\x61\x70\x70\x6c\x65"
 
+
 Instructions:
 	To run the script, open a terminal and type in:
 	    
@@ -26,7 +30,7 @@ Instructions:
 	    
 	So to test the examples provided, you would open a terminal in the folder where obfuscator.py is located and type:
 	    
-	    $ python obfuscator.py Example/Main.as Example/Main_Obfs.as
+	    $ python obfuscator.py example/Bubble_Sort.as example/Bubble_Sort_Obfs.as
 	
 	If a new file name is not provided, the script will automatically write to Filename_Obfs.as
 	The script will change the constructor name to match your new filename as well.
