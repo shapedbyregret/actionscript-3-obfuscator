@@ -77,17 +77,28 @@ def stringToHex(oldString):
 
 # Check if arguments given
 if len(sys.argv)>1:
-	fullFileName = sys.argv[1]
+	filePath = sys.argv[1]
+	fullFileName = filePath.rsplit("/", 1)[1]
 	fileName = fullFileName.rsplit(".", 1)[0]
 	if len(sys.argv)>2:
-		newFullFileName = sys.argv[2]
+		newFilePath = sys.argv[2]
+		newFullFileName = newFilePath.rspit("/", 1)[1]
 		newFileName = newFullFileName.rsplit(".", 1)[0]
 	else:
+		# Create new file path
+		tmpList = filePath.rsplit(".", 1)
+		if len(tmpList)>1: # Check if there is a file extension
+			newFilePath = tmpList[0] + "_Obfs." + tmpList[1]
+		else:
+			newFilePath = fileName + "_Obfs"
+
+		# Create new file name
 		tmpList = fullFileName.rsplit(".", 1)
 		if len(tmpList)>1:
 			newFullFileName = tmpList[0] + "_Obfs." + tmpList[1]
 		else:
 			newFullFileName = fileName + "_Obfs"
+
 		newFileName = fileName + "_Obfs"
 else:
 	print "Filename not provided."
@@ -97,7 +108,7 @@ else:
 # Open File
 #
 #========================================
-fileToChange = open(fullFileName, "r")
+fileToChange = open(filePath, "r")
 listLines = fileToChange.readlines() # Store fileToChange to memory in a list
 fileToChange.close() # Close file
 
@@ -161,6 +172,7 @@ for line in listLines:
 				tmpList = re.findall("\w+\s*(?=[\(|:])", newLine) # Make list of all words ending with ":" or "("
 			else:
 				tmpList = re.findall("\w+\s*(?=:)", newLine) # Make list of all words ending with just ":"
+			
 			for tmpLine in tmpList: # Sort through list of variable names
 				varsFound.append(tmpLine) # and append to varsFound list
 				
@@ -245,9 +257,9 @@ if changeVarName:
 #
 #========================================
 if changeFileName:
-	fileToWrite = open(newFullFileName, "w") # Then open it for writing
+	fileToWrite = open(newFilePath, "w") # Open for writing
 else:
-	fileToWrite = open(fullFileName, "w")
+	fileToWrite = open(filePath, "w")
 for line in listLines: # Go through our modified listLines one line at a time
 	fileToWrite.write(line) # Write each line to the file
 

@@ -1,4 +1,4 @@
-﻿package  {
+package  {
 	import flash.display.SimpleButton;
 	import flash.events.*;
 	import flash.display.MovieClip;
@@ -8,7 +8,7 @@
 	import flash.utils.Timer;
 
 	[SWF(width="400", height="600", backgroundColor="#FFFFFF",frameRate="30")]
-	public class Main extends Sprite {
+	public class Bubble_Sort extends Sprite {
 		
 		private var buffer:MovieClip;
 		private var numElements:int;
@@ -32,7 +32,7 @@
 		private var timerRandom:Timer;
 		private var timerReverse:Timer;
 		
-		public function Main() {
+		public function Bubble_Sort() {
 			
 			// Create Start Button
 			var styles:StyleSheet = new StyleSheet();
@@ -332,3 +332,4 @@
 	}
 	
 }
+
