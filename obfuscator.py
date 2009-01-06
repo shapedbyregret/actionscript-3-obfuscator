@@ -36,7 +36,7 @@ encodeStrings = True
 
 # Following options should not be changed.
 # They are either incomplete or incorrectly implemented.
-removeWhiteSpace = False
+removeWhitespace = False
 changeFileName = True
 
 #========================================
