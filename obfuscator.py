@@ -92,7 +92,7 @@ if len(sys.argv)>1:
     fileName = fullFileName.rsplit(".", 1)[0]
     if len(sys.argv)>2:
         newFilePath = sys.argv[2]
-        newFullFileName = newFilePath.rspit("/", 1)[1]
+        newFullFileName = newFilePath.rsplit("/", 1)[1]
         newFileName = newFullFileName.rsplit(".", 1)[0]
     else:
         # Create new file path
@@ -223,16 +223,16 @@ for line in listLines:
 
     #========================================
     # Encode strings
-    # Iterates over each character in string until a double quote is found.
-    # If double quote has not been escaped, then convert following chars to
-    # their hex string equivalent until another double quote found.
-    # TODO: Add support for single quotes.
+    # Iterates over each character in string until a single or double
+    # quote is found. If quote has not been escaped, then convert
+    # following chars to their hex string equivalent until another quote
+    # is found.
     if encodeStrings:
         tmpLine = ""
         inSingleQuote = False
         inDoubleQuote = False
         for x in range(0, len(newLine)):
-            if newLine[x]=="\"":
+            if newLine[x]=="\"" and not inSingleQuote:
                 if x>0 and newLine[x-1]!="\\":
                     if inDoubleQuote:
                         inDoubleQuote = False
@@ -241,8 +241,17 @@ for line in listLines:
                     tmpLine += newLine[x]
                 else:
                     tmpLine += string_to_hex( newLine[x] )
+            elif newLine[x]=="\'" and not inDoubleQuote:
+                if x>0 and newLine[x-1]!="\\":
+                    if inSingleQuote:
+                        inSingleQuote = False
+                    else:
+                        inSingleQuote = True
+                    tmpLine += newLine[x]
+                else:
+                    tmpLine += string_to_hex( newLine[x] )
             else:
-                if inDoubleQuote:
+                if inDoubleQuote or inSingleQuote:
                     tmpLine += string_to_hex( newLine[x] )
                 else:
                     tmpLine += newLine[x]
@@ -274,12 +283,16 @@ for line in listLines:
 # TODO: Find less expensive way to implement.
 if changeVarName:
     for line in listLines:
-        newLine = line
-        for j in range(0, len(varsFound)):
-            newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
-        lineIndex = listLines.index(line)
-        listLines.remove(line)
-        listLines.insert(lineIndex, newLine)
+        newLine = line	
+        # Attempt to find import at beginning of line
+        tmpLine = strip_white_space(newLine)
+        tmpIndex = tmpLine.find("import")
+        if( tmpIndex!=0 ):
+            for j in range(0, len(varsFound)):
+                newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
+            lineIndex = listLines.index(line)
+            listLines.remove(line)
+            listLines.insert(lineIndex, newLine)
 
 
 #========================================
