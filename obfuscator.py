@@ -22,6 +22,7 @@
 # Import modules
 #
 #========================================
+import os.path
 import re
 import random
 import sys
@@ -88,7 +89,7 @@ def string_to_hex(oldString):
 # Check if arguments given
 if len(sys.argv)>1:
     filePath = sys.argv[1]
-    fullFileName = filePath.rsplit("/", 1)[1]
+    fullFileName = os.path.split(filePath)[1]
     fileName = fullFileName.rsplit(".", 1)[0]
     if len(sys.argv)>2:
         newFilePath = sys.argv[2]
@@ -197,10 +198,11 @@ for line in listLines:
         # After we've found our words we add them to varsFound and create a
         # jumbled replacement name for each one.
         if varDeclareFound:
-            if functionIndex != -1:
-                tmpList = re.findall("\w+\s*(?=[\(|:])", newLine)
-            else:
-                tmpList = re.findall("\w+\s*(?=:)", newLine)
+            #if functionIndex != -1:
+            #    tmpList = re.findall("\w+\s*(?=[\(|:])", newLine)
+            #else:
+            #    tmpList = re.findall("\w+\s*(?=:)", newLine)
+            tmpList = re.findall("(?<=var.)\w+|(?<=function.)\w+|(?<=const.)\w+", newLine)
 
             for tmpLine in tmpList:
                 varsFound.append(tmpLine)
