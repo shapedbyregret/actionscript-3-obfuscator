@@ -168,18 +168,9 @@ for line in listLines:
         # last instance of found "//", appending a "\n" and storing it.
         # Note: The following relies on the assumption that the code being
         #       read uses semicolons to end statements.
-        strippedLine = strip_white_space(newLine)
-        commentIndex = strippedLine.rfind("//")
-        if commentIndex != -1:
-            safeToDelete = True
-            semicolonIndex = strippedLine.find(";")
-            if semicolonIndex != -1:
-                if commentIndex<semicolonIndex and commentIndex !=0:
-                    safeToDelete = False
-            if safeToDelete:
-                tmpLine = newLine.rsplit("//",1)
-                tmpLine[0] += "\n"
-                newLine = tmpLine[0]
+        tmpLine = re.sub("//(?<=//)[^\r]*", "", newLine)
+        if tmpLine != "":
+            newLine = tmpLine
     
     #========================================
     # Collect variable names
