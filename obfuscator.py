@@ -25,6 +25,7 @@
 import os.path
 import re
 import random
+import string
 import sys
 
 
@@ -50,6 +51,8 @@ blockCommentFound = False
 varDeclareFound = False
 varsFound = []
 varsNew = []
+varLength = 5
+varCharSet = string.ascii_uppercase + string.ascii_lowercase + string.digits
 
 
 #========================================
@@ -124,7 +127,6 @@ fileToChange = open(filePath, "r")
 listLines = fileToChange.readlines() # Store fileToChange to memory in a list
 fileToChange.close() # Close file
 
-
 #========================================
 # Iterate over file, one line at a time
 #
@@ -189,14 +191,12 @@ for line in listLines:
         # After we've found our words we add them to varsFound and create a
         # jumbled replacement name for each one.
         if varDeclareFound:
-            #if functionIndex != -1:
-            #    tmpList = re.findall("\w+\s*(?=[\(|:])", newLine)
-            #else:
-            #    tmpList = re.findall("\w+\s*(?=:)", newLine)
             tmpList = re.findall("(?<=var.)\w+|(?<=function.)\w+|(?<=const.)\w+", newLine)
 
             for tmpLine in tmpList:
-                varsFound.append(tmpLine)
+                # Skip over constructor name
+                if tmpLine.find(fileName) == -1:
+                    varsFound.append(tmpLine)
 				
                 # Create new variable name.
                 # Keep searching until find a unique name consisting of an
@@ -204,7 +204,9 @@ for line in listLines:
                 newVarName = ""
                 foundNewName = False
                 while not foundNewName:
-                    newVarName = "_" + str(random.randrange(1,5000))
+                    #newVarName = "_" + str(random.randrange(1,5000))
+                    newVarName = "_"
+                    newVarName += "".join(random.choice(varCharSet) for x in range(varLength))
                     if newVarName not in varsNew:
                         foundNewName = True
                 varsNew.append(newVarName)
@@ -259,8 +261,9 @@ for line in listLines:
     #========================================
     # Change constructor to match new file name
     if changeFileName:
-        if newLine.find(fileName) != -1:
-            newLine = newLine.replace(fileName, newFileName, 1)
+        tmpLine = re.sub(fileName, newFileName, newLine)
+        if tmpLine != "":
+            newLine = tmpLine
 
     #========================================
     # Replace line
