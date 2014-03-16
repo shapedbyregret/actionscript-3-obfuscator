@@ -131,6 +131,7 @@ fileToChange.close() # Close file
 # Iterate over file, one line at a time
 #
 #========================================
+linenum = 0
 for line in listLines:
 
     newLine = line
@@ -154,14 +155,14 @@ for line in listLines:
 
         # If we find the end of the block comment, then we will store
         # everything past it, otherwise simply replace entire line with
-        # a newline ("\n"), which helps to preserve code structure.
+        # a newline, which helps to preserve code structure.
         if blockCommentFound:
             if newLine.find("*/") != -1:
-                tmpLine = newLine.rsplit("*/", 1)
+                tmpLine = newLine.rsplit("*/")
                 newLine = tmpLine[1]
                 blockCommentFound = False
             else:
-                newLine = "\n"
+                newLine = "%s" % os.linesep
 
         #========================================
         # Remove single line comments i.e. all text following "//"
@@ -173,7 +174,7 @@ for line in listLines:
         tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
         if tmpLine != "":
             newLine = tmpLine
-    
+
     #========================================
     # Collect variable names
     if changeVarName:
@@ -265,9 +266,8 @@ for line in listLines:
 
     #========================================
     # Replace line
-    lineIndex = listLines.index(line)
-    listLines.remove(line)
-    listLines.insert(lineIndex, newLine)
+    listLines[linenum] = newLine
+    linenum += 1
 
 
 #========================================
