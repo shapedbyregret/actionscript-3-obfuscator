@@ -22,7 +22,7 @@
 # Import modules
 #
 #========================================
-import os.path
+import os
 import re
 import random
 import string
@@ -167,10 +167,10 @@ for line in listLines:
         # Remove single line comments i.e. all text following "//"
         # Find last instance of "//" and determine if it is after semicolon.
         # If so then it is safe to delete. Which we do by splitting at the
-        # last instance of found "//", appending a "\n" and storing it.
+        # last instance of found "//", appending a "\n" or "\r" and storing it.
         # Note: The following relies on the assumption that the code being
         #       read uses semicolons to end statements.
-        tmpLine = re.sub("//(?<=//)[^\r]*", "", newLine)
+        tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
         if tmpLine != "":
             newLine = tmpLine
     
@@ -179,11 +179,9 @@ for line in listLines:
     if changeVarName:
         tmpList = []
 
-        # Store indices of AS3 reserved words "var", "function", or "const"
-        varIndex = newLine.find("var")
-        functionIndex = newLine.find("function")
-        constIndex = newLine.find("const")
-        if varIndex != -1 or functionIndex != -1 or constIndex != -1:
+        # Determine if any of the keywords were found in newLine.
+        keys = ['var', 'function', 'const']
+        if any(x in newLine for x in keys):
             varDeclareFound = True
 
         # If "function" was found, then we make a list of all words preceding
@@ -283,7 +281,7 @@ if changeVarName:
         # Attempt to find import at beginning of line
         tmpLine = strip_white_space(newLine)
         tmpIndex = tmpLine.find("import")
-        if( tmpIndex!=0 ):
+        if tmpIndex != 0:
             for j in range(0, len(varsFound)):
                 newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
             lineIndex = listLines.index(line)
