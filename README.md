@@ -17,12 +17,12 @@ Instructions: To run the script, open a terminal and type in:
 ```
 $ python /path/to/obfuscator.py /path/to/Filename.as /path/to/NewFilename.as
 ```
-	
+
 So to test the examples provided, you would open a terminal in the folder where obfuscator.py is located and type:
 ```
 $ python obfuscator.py example/Bubble_Sort.as example/Bubble_Sort_Obfs.as
 ```
-	
+
 If a new file name is not provided, the script will automatically write to Filename_Obfs.as. The script will change the constructor name to match your new filename as well.
 
 Notes: Script was developed using Python 2.6 and has not been tested with any other versions. If you run into any errors, feel free to contact me at the e-mail address above.
