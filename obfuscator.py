@@ -171,9 +171,13 @@ for line in listLines:
         # last instance of found "//", appending a "\n" or "\r" and storing it.
         # Note: The following relies on the assumption that the code being
         #       read uses semicolons to end statements.
-        tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
-        if tmpLine != "":
-            newLine = tmpLine
+        if "//" in newLine:
+            if ";" in newLine:
+                tmpLine = re.sub("(?<=;)(.*)(?<=//)[^%s]*" % os.linesep, "", newLine)
+            else:
+                tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
+            if tmpLine != "":
+                newLine = tmpLine
 
     #========================================
     # Collect variable names
