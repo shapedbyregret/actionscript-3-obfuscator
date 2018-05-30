@@ -67,10 +67,10 @@ varCharSet = string.ascii_uppercase + string.ascii_lowercase + string.digits
 # First replaces each newline with an empty string, then splits at each
 # tab, and then joins it all back together before returning.
 def strip_white_space(someText):
-    tmpLine = someText.replace("\n", "", 1)
-    tmpList = tmpLine.split("\t")
-    tmpLine = "".join(["%s" % k for k in tmpList])
-    return tmpLine
+	tmpLine = someText.replace("\n", "", 1)
+	tmpList = tmpLine.split("\t")
+	tmpLine = "".join(["%s" % k for k in tmpList])
+	return tmpLine
 
 #========================================
 # string_to_hex(String)
@@ -78,12 +78,12 @@ def strip_white_space(someText):
 # int, and then to a hex string. All "0" chars are replaced with "\"
 # and added to newString.
 def string_to_hex(oldString):
-    newString = ""
-    for char in oldString:
-        tmpString = hex(ord(char))
-        tmpString = tmpString.replace("0", "\\", 1)
-        newString += tmpString
-    return newString
+	newString = ""
+	for char in oldString:
+		tmpString = hex(ord(char))
+		tmpString = tmpString.replace("0", "\\", 1)
+		newString += tmpString
+	return newString
 
 
 #========================================
@@ -93,32 +93,32 @@ def string_to_hex(oldString):
 
 # Check if arguments given
 if len(sys.argv)>1:
-    filePath = sys.argv[1]
-    fullFileName = os.path.basename(filePath)
-    fileName = fullFileName.rsplit(".", 1)[0]
-    if len(sys.argv)>2:
-        newFilePath = sys.argv[2]
-        newFullFileName = os.path.basename(newFilePath)
-        newFileName = newFullFileName.rsplit(".", 1)[0]
-    else:
-        # Create new file path
-        tmpList = filePath.rsplit(".", 1)
-        if len(tmpList)>1: # Check if there is a file extension
-            newFilePath = tmpList[0] + "_Obfs." + tmpList[1]
-        else:
-            newFilePath = fileName + "_Obfs"
+	filePath = sys.argv[1]
+	fullFileName = os.path.basename(filePath)
+	fileName = fullFileName.rsplit(".", 1)[0]
+	if len(sys.argv)>2:
+		newFilePath = sys.argv[2]
+		newFullFileName = os.path.basename(newFilePath)
+		newFileName = newFullFileName.rsplit(".", 1)[0]
+	else:
+		# Create new file path
+		tmpList = filePath.rsplit(".", 1)
+		if len(tmpList)>1: # Check if there is a file extension
+			newFilePath = tmpList[0] + "_Obfs." + tmpList[1]
+		else:
+			newFilePath = fileName + "_Obfs"
 
-        # Create new file name
-        tmpList = fullFileName.rsplit(".", 1)
-        if len(tmpList)>1:
-            newFullFileName = tmpList[0] + "_Obfs." + tmpList[1]
-        else:
-            newFullFileName = fileName + "_Obfs"
+		# Create new file name
+		tmpList = fullFileName.rsplit(".", 1)
+		if len(tmpList)>1:
+			newFullFileName = tmpList[0] + "_Obfs." + tmpList[1]
+		else:
+			newFullFileName = fileName + "_Obfs"
 
-        newFileName = fileName + "_Obfs"
+		newFileName = fileName + "_Obfs"
 else:
-    print "Filename not provided."
-    exit()
+	print "Filename not provided."
+	exit()
 
 
 #========================================
@@ -136,147 +136,145 @@ fileToChange.close() # Close file
 linenum = 0
 for line in listLines:
 
-    newLine = line
-
-    #========================================
-    # Collect variable names
-    if changeVarName and reservedKeyWord not in newLine:
-        tmpList = []
-		
-        # Determine if any of the keywords were found in newLine.
-        keys = ['var', 'function', 'const']
-        if any(x in newLine for x in keys):
-			if skipPublic and 'public' in newLine:
-				varDeclareFound = False
-			else:
-				varDeclareFound = True
-
-        # If "function" was found, then we make a list of all words preceding
-        # a ":" or "(". Otherwise only store words preceding ":".
-        # After we've found our words we add them to varsFound and create a
-        # jumbled replacement name for each one.
-        if varDeclareFound:
-            tmpList = re.findall("(?<=var.)\w+|(?<=function.)\w+|(?<=const.)\w+", newLine)
-
-            for tmpLine in tmpList:
-                # Skip over constructor name
-                if tmpLine.find(fileName) == -1:
-                    varsFound.append(tmpLine)
-                
-                # Create new variable name.
-                # Keep searching until find a unique name consisting of an
-                # underscore preceding a random number from 1-5000.
-                newVarName = ""
-                foundNewName = False
-                while not foundNewName:
-                    #newVarName = "_" + str(random.randrange(1,5000))
-                    newVarName = "_"
-                    newVarName += "".join(random.choice(varCharSet) for x in range(varLength))
-                    if newVarName not in varsNew:
-                        foundNewName = True
-                varsNew.append(newVarName)
-
-            # Reached a semicolon or open bracket and presumably end of
-            # var/function/const declaration.
-            if newLine.find(";") != -1 or newLine.find("{") != -1:
-                varDeclareFound = False
+	newLine = line
 
 	#========================================
-    # Remove comments
-    if removeComments:
-    
-        #========================================
-        # Remove and delete all inline block comments
-        # Replaces everything between "/*" and "*/" with an empty string.
-        tmpLine = re.sub(r"(/\*).*?(\*/)", "", newLine)
-        if tmpLine != "":
-            newLine = tmpLine
+	# Collect variable names
+	if changeVarName and reservedKeyWord not in newLine:
+		tmpList = []
+		
+		# Determine if any of the keywords were found in newLine.
+		keys = ['var', 'function', 'const']
+		if any(x in newLine for x in keys):
+			if not skipPublic or 'public' not in newLine:
+				varDeclareFound = True
 
-        #========================================
-        # Remove all other block comments.
-        # Attempts to find beginning of block comment statement.
-        if newLine.find("/*") != -1:
-            blockCommentFound = True
+		# If "function" was found, then we make a list of all words preceding
+		# a ":" or "(". Otherwise only store words preceding ":".
+		# After we've found our words we add them to varsFound and create a
+		# jumbled replacement name for each one.
+		if varDeclareFound:
+			tmpList = re.findall("(?<=var.)\w+|(?<=function.)\w+|(?<=const.)\w+", newLine)
 
-        # If we find the end of the block comment, then we will store
-        # everything past it, otherwise simply replace entire line with
-        # a newline, which helps to preserve code structure.
-        if blockCommentFound:
-            if newLine.find("*/") != -1:
-                tmpLine = newLine.rsplit("*/")
-                newLine = tmpLine[1]
-                blockCommentFound = False
-            else:
-                newLine = "%s" % os.linesep
-
-        #========================================
-        # Remove single line comments i.e. all text following "//"
-        # Find last instance of "//" and determine if it is after semicolon.
-        # If so then it is safe to delete. Which we do by splitting at the
-        # last instance of found "//", appending a "\n" or "\r" and storing it.
-        # Note: The following relies on the assumption that the code being
-        #       read uses semicolons to end statements.
-        if "//" in newLine:
-            if ";" in newLine:
-                tmpLine = re.sub("(?<=;)(.*)(?<=//)[^%s]*" % os.linesep, "", newLine)
-            else:
-                tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
-            if tmpLine != "":
-                newLine = tmpLine
+			for tmpLine in tmpList:
+				# Skip over constructor name
+				if tmpLine.find(fileName) == -1:
+					varsFound.append(tmpLine)
 				
-    #========================================
-    # Encode strings
-    # Iterates over each character in string until a single or double
-    # quote is found. If quote has not been escaped, then convert
-    # following chars to their hex string equivalent until another quote
-    # is found.
-    if encodeStrings:
-        tmpLine = ""
-        inSingleQuote = False
-        inDoubleQuote = False
-        for x in range(0, len(newLine)):
-            if newLine[x]=="\"" and not inSingleQuote:
-                if x>0 and newLine[x-1]!="\\":
-                    if inDoubleQuote:
-                        inDoubleQuote = False
-                    else:
-                        inDoubleQuote = True
-                    tmpLine += newLine[x]
-                else:
-                    tmpLine += string_to_hex( newLine[x] )
-            elif newLine[x]=="\'" and not inDoubleQuote:
-                if x>0 and newLine[x-1]!="\\":
-                    if inSingleQuote:
-                        inSingleQuote = False
-                    else:
-                        inSingleQuote = True
-                    tmpLine += newLine[x]
-                else:
-                    tmpLine += string_to_hex( newLine[x] )
-            else:
-                if inDoubleQuote or inSingleQuote:
-                    tmpLine += string_to_hex( newLine[x] )
-                else:
-                    tmpLine += newLine[x]
-            
-        newLine = tmpLine
+				# Create new variable name.
+				# Keep searching until find a unique name consisting of an
+				# underscore preceding a random number from 1-5000.
+				newVarName = ""
+				foundNewName = False
+				while not foundNewName:
+					#newVarName = "_" + str(random.randrange(1,5000))
+					newVarName = "_"
+					newVarName += "".join(random.choice(varCharSet) for x in range(varLength))
+					if newVarName not in varsNew:
+						foundNewName = True
+				varsNew.append(newVarName)
 
-    #========================================
-    # Remove newlines and tabs
-    if removeWhitespace:
-        newLine = strip_white_space(newLine)
+			# Reached a semicolon or open bracket and presumably end of
+			# var/function/const declaration.
+			if newLine.find(";") != -1 or newLine.find("{") != -1:
+				varDeclareFound = False
 
-    #========================================
-    # Change constructor to match new file name
-    if changeFileName:
-        tmpLine = re.sub(fileName, newFileName, newLine)
-        if tmpLine != "":
-            newLine = tmpLine
+	#========================================
+	# Remove comments
+	if removeComments:
+	
+		#========================================
+		# Remove and delete all inline block comments
+		# Replaces everything between "/*" and "*/" with an empty string.
+		tmpLine = re.sub(r"(/\*).*?(\*/)", "", newLine)
+		if tmpLine != "":
+			newLine = tmpLine
 
-    #========================================
-    # Replace line
-    listLines[linenum] = newLine
-    linenum += 1
+		#========================================
+		# Remove all other block comments.
+		# Attempts to find beginning of block comment statement.
+		if newLine.find("/*") != -1:
+			blockCommentFound = True
+
+		# If we find the end of the block comment, then we will store
+		# everything past it, otherwise simply replace entire line with
+		# a newline, which helps to preserve code structure.
+		if blockCommentFound:
+			if newLine.find("*/") != -1:
+				tmpLine = newLine.rsplit("*/")
+				newLine = tmpLine[1]
+				blockCommentFound = False
+			else:
+				newLine = "%s" % os.linesep
+
+		#========================================
+		# Remove single line comments i.e. all text following "//"
+		# Find last instance of "//" and determine if it is after semicolon.
+		# If so then it is safe to delete. Which we do by splitting at the
+		# last instance of found "//", appending a "\n" or "\r" and storing it.
+		# Note: The following relies on the assumption that the code being
+		#       read uses semicolons to end statements.
+		if "//" in newLine:
+			if ";" in newLine:
+				tmpLine = re.sub("(?<=;)(.*)(?<=//)[^%s]*" % os.linesep, "", newLine)
+			else:
+				tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
+			if tmpLine != "":
+				newLine = tmpLine
+				
+	#========================================
+	# Encode strings
+	# Iterates over each character in string until a single or double
+	# quote is found. If quote has not been escaped, then convert
+	# following chars to their hex string equivalent until another quote
+	# is found.
+	if encodeStrings:
+		tmpLine = ""
+		inSingleQuote = False
+		inDoubleQuote = False
+		for x in range(0, len(newLine)):
+			if newLine[x]=="\"" and not inSingleQuote:
+				if x>0 and newLine[x-1]!="\\":
+					if inDoubleQuote:
+						inDoubleQuote = False
+					else:
+						inDoubleQuote = True
+					tmpLine += newLine[x]
+				else:
+					tmpLine += string_to_hex( newLine[x] )
+			elif newLine[x]=="\'" and not inDoubleQuote:
+				if x>0 and newLine[x-1]!="\\":
+					if inSingleQuote:
+						inSingleQuote = False
+					else:
+						inSingleQuote = True
+					tmpLine += newLine[x]
+				else:
+					tmpLine += string_to_hex( newLine[x] )
+			else:
+				if inDoubleQuote or inSingleQuote:
+					tmpLine += string_to_hex( newLine[x] )
+				else:
+					tmpLine += newLine[x]
+			
+		newLine = tmpLine
+
+	#========================================
+	# Remove newlines and tabs
+	if removeWhitespace:
+		newLine = strip_white_space(newLine)
+
+	#========================================
+	# Change constructor to match new file name
+	if changeFileName:
+		tmpLine = re.sub(fileName, newFileName, newLine)
+		if tmpLine != "":
+			newLine = tmpLine
+
+	#========================================
+	# Replace line
+	listLines[linenum] = newLine
+	linenum += 1
 
 
 #========================================
@@ -285,17 +283,17 @@ for line in listLines:
 # variables previously found.
 # TODO: Find less expensive way to implement.
 if changeVarName:
-    for line in listLines:
-        newLine = line  
-        # Attempt to find import at beginning of line
-        tmpLine = strip_white_space(newLine)
-        tmpIndex = tmpLine.find("import")
-        if tmpIndex != 0:
-            for j in range(0, len(varsFound)):
-                newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
-            lineIndex = listLines.index(line)
-            listLines.remove(line)
-            listLines.insert(lineIndex, newLine)
+	for line in listLines:
+		newLine = line  
+		# Attempt to find import at beginning of line
+		tmpLine = strip_white_space(newLine)
+		tmpIndex = tmpLine.find("import")
+		if tmpIndex != 0:
+			for j in range(0, len(varsFound)):
+				newLine = re.sub(r"\b"+varsFound[j]+r"\b", varsNew[j], newLine)
+			lineIndex = listLines.index(line)
+			listLines.remove(line)
+			listLines.insert(lineIndex, newLine)
 
 
 #========================================
@@ -303,11 +301,11 @@ if changeVarName:
 #
 #========================================
 if changeFileName:
-    fileToWrite = open(newFilePath, "w")
+	fileToWrite = open(newFilePath, "w")
 else:
-    fileToWrite = open(filePath, "w")
+	fileToWrite = open(filePath, "w")
 for line in listLines:
-    fileToWrite.write(line)
+	fileToWrite.write(line)
 
 # Close file after writing
 fileToWrite.close()
