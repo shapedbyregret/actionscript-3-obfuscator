@@ -2,7 +2,7 @@
 
 Homepage: http://github.com/shapedbyregret/actionscript-3-obfuscator/tree/master
 
-Options: There are currently only 3 options that you can change by setting them to either "True" or "False".
+Options: There are currently only 4 options that you can change by setting them to either "True" or "False".
 
 ```
 removeComments: When set to "True", will remove all comments from your .as file. This includes both block comments (all text between "/*" and "*/") and single line comments (all text following "//").
@@ -10,6 +10,13 @@ removeComments: When set to "True", will remove all comments from your .as file.
 changeVarName: Changes all variable, constant, and function names to a random number prefixed with an underscore. Eg "var aNumber:int" becomes "var _324:int".
 
 encodestrings: Converts string literals into their hex equivalent. Eg. "apple" becomes "\x61\x70\x70\x6c\x65"
+
+skipPublic: Skips variable, constant, or function if they are public. This should help with protecting public APIs from being obfuscated.
+```
+
+If the keyword "!reserved" appears in a line, it will be skipped. This allows you to opt lines in/out of obfuscation. For example, the following variable would not be obfuscated. If "removeComments" is enabled, it will remove the `//!reserved` comment.
+```
+var testStr:String = 'test'; //!reserved
 ```
 
 

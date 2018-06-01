@@ -36,6 +36,8 @@ import sys
 removeComments = True
 changeVarName = True
 encodeStrings = True
+skipPublic = True
+reservedKeyWord = '!reserved'
 
 # Following options should not be changed.
 # They are either incomplete or incorrectly implemented.
@@ -92,11 +94,11 @@ def string_to_hex(oldString):
 # Check if arguments given
 if len(sys.argv)>1:
     filePath = sys.argv[1]
-    fullFileName = os.path.split(filePath)[1]
+    fullFileName = os.path.basename(filePath)
     fileName = fullFileName.rsplit(".", 1)[0]
     if len(sys.argv)>2:
         newFilePath = sys.argv[2]
-        newFullFileName = newFilePath.rsplit("/", 1)[1]
+        newFullFileName = os.path.basename(newFilePath)
         newFileName = newFullFileName.rsplit(".", 1)[0]
     else:
         # Create new file path
@@ -137,9 +139,50 @@ for line in listLines:
     newLine = line
 
     #========================================
+    # Collect variable names
+    if changeVarName and reservedKeyWord not in newLine:
+        tmpList = []
+        
+        # Determine if any of the keywords were found in newLine.
+        keys = ['var', 'function', 'const']
+        if any(x in newLine for x in keys):
+            if not skipPublic or 'public' not in newLine:
+                varDeclareFound = True
+
+        # If "function" was found, then we make a list of all words preceding
+        # a ":" or "(". Otherwise only store words preceding ":".
+        # After we've found our words we add them to varsFound and create a
+        # jumbled replacement name for each one.
+        if varDeclareFound:
+            tmpList = re.findall("(?<=var.)\w+|(?<=function.)\w+|(?<=const.)\w+", newLine)
+
+            for tmpLine in tmpList:
+                # Skip over constructor name
+                if tmpLine.find(fileName) == -1:
+                    varsFound.append(tmpLine)
+                
+                # Create new variable name.
+                # Keep searching until find a unique name consisting of an
+                # underscore preceding a random number from 1-5000.
+                newVarName = ""
+                foundNewName = False
+                while not foundNewName:
+                    #newVarName = "_" + str(random.randrange(1,5000))
+                    newVarName = "_"
+                    newVarName += "".join(random.choice(varCharSet) for x in range(varLength))
+                    if newVarName not in varsNew:
+                        foundNewName = True
+                varsNew.append(newVarName)
+
+            # Reached a semicolon or open bracket and presumably end of
+            # var/function/const declaration.
+            if newLine.find(";") != -1 or newLine.find("{") != -1:
+                varDeclareFound = False
+
+    #========================================
     # Remove comments
     if removeComments:
-	
+    
         #========================================
         # Remove and delete all inline block comments
         # Replaces everything between "/*" and "*/" with an empty string.
@@ -178,47 +221,7 @@ for line in listLines:
                 tmpLine = re.sub("//(?<=//)[^%s]*" % os.linesep, "", newLine)
             if tmpLine != "":
                 newLine = tmpLine
-
-    #========================================
-    # Collect variable names
-    if changeVarName:
-        tmpList = []
-
-        # Determine if any of the keywords were found in newLine.
-        keys = ['var', 'function', 'const']
-        if any(x in newLine for x in keys):
-            varDeclareFound = True
-
-        # If "function" was found, then we make a list of all words preceding
-        # a ":" or "(". Otherwise only store words preceding ":".
-        # After we've found our words we add them to varsFound and create a
-        # jumbled replacement name for each one.
-        if varDeclareFound:
-            tmpList = re.findall("(?<=var.)\w+|(?<=function.)\w+|(?<=const.)\w+", newLine)
-
-            for tmpLine in tmpList:
-                # Skip over constructor name
-                if tmpLine.find(fileName) == -1:
-                    varsFound.append(tmpLine)
-				
-                # Create new variable name.
-                # Keep searching until find a unique name consisting of an
-                # underscore preceding a random number from 1-5000.
-                newVarName = ""
-                foundNewName = False
-                while not foundNewName:
-                    #newVarName = "_" + str(random.randrange(1,5000))
-                    newVarName = "_"
-                    newVarName += "".join(random.choice(varCharSet) for x in range(varLength))
-                    if newVarName not in varsNew:
-                        foundNewName = True
-                varsNew.append(newVarName)
-
-            # Reached a semicolon or open bracket and presumably end of
-            # var/function/const declaration.
-            if newLine.find(";") != -1 or newLine.find("{") != -1:
-                varDeclareFound = False
-
+                
     #========================================
     # Encode strings
     # Iterates over each character in string until a single or double
@@ -253,7 +256,7 @@ for line in listLines:
                     tmpLine += string_to_hex( newLine[x] )
                 else:
                     tmpLine += newLine[x]
-			
+            
         newLine = tmpLine
 
     #========================================
@@ -281,7 +284,7 @@ for line in listLines:
 # TODO: Find less expensive way to implement.
 if changeVarName:
     for line in listLines:
-        newLine = line	
+        newLine = line  
         # Attempt to find import at beginning of line
         tmpLine = strip_white_space(newLine)
         tmpIndex = tmpLine.find("import")
